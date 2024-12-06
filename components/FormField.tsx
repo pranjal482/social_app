@@ -12,7 +12,7 @@ const FormField = ({title, value, placeholder, handleChangeText, otherStyles, ..
     <View style={tw`space-y-2 ${otherStyles}`}>
       <Text style={tw`text-base text-gray-100 font-medium mb-2`}>{title}</Text>
 
-      <View style={tw`border-2 border-black-100 w-full h-16 px-4 bg-[#1E1E2D]  rounded-2xl focus:border-[#FF9C01] items-center flex-row`}>
+      <View style={tw`border-2 border-black-100 w-full h-16 px-4 bg-[#1E1E2D]  rounded-2xl focus:border-white items-center flex-row`}>
             <TextInput
              style={tw`flex-1 text-white font-semibold text-base`}
              value={value}
