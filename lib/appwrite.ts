@@ -1,3 +1,5 @@
+import { Account, Avatars, Client, Databases, ID, Query, Storage } from 'react-native-appwrite';
+
 
 export const config = {
     endpoint: 'https://cloud.appwrite.io/v1',
@@ -9,34 +11,26 @@ export const config = {
     storageId : '675264a4001223189e77'
 }
 
-import SignIn from '@/app/(auth)/sign-in';
-import { Account, Avatars, Client, Databases, ID, Query } from 'react-native-appwrite';
 
 const client = new Client()
 client
-    .setEndpoint(config.endpoint)
-    .setProject(config.projectId)
-    .setPlatform(config.platform);
+    .setEndpoint('https://cloud.appwrite.io/v1')
+    .setProject('6751e139002f940e711b')
+    .setPlatform('com.pisc.aora');
 
 
 const account = new Account(client);
+const storage = new Storage(client);
 const avatars = new Avatars(client);
 const databases = new Databases(client);
 
-export const createUser = async(username, email, password ) => {
+export const createUser = async (email, password, username) => {
     try {
-        const newAccount = await account.create(
-            ID.unique(),
-            username,
-            email,
-            password,
-        )
+        const newAccount = await account.create(ID.unique(), email, password);
+        if (!newAccount) throw new Error('Failed to create account.');
+        console.log('Account created:', newAccount.$id);
 
-        if(!newAccount) throw Error;
-
-        const avatarUrl = avatars.getInitials(username)
-
-        await SignIn(email, password)
+        const avatarUrl = avatars.getInitials(username);
 
         const newUser = await databases.createDocument(
             config.databaseId,
@@ -46,26 +40,32 @@ export const createUser = async(username, email, password ) => {
                 accountId: newAccount.$id,
                 email,
                 username,
-                avatar: avatarUrl
+                avatar: avatarUrl,
             }
-        )
+        );
 
-        return newUser;
+        return {
+            accountId: newAccount.$id,
+            email: newAccount.email,
+            newUser: newUser.$id,
+        };
     } catch (error) {
-        console.log(error);
-        throw new Error(error);
+        console.error('Error creating user:', error.message);
+        throw error;
     }
-}
+};
 
-export const signIn = async(email, password) => {
-    try {
-        const session = await account.createEmailPasswordSession(email, password);
 
-        return session;
-    } catch (error) {
-        throw new Error(error)
-    }
-}
+// export const signIn = async(email, password) => {
+//     try {
+//         const session = await account.createEmailPasswordSession(email, password);
+//         console.log(session);
+
+//         return session;
+//     } catch (error) {
+//         throw new Error(error)
+//     }
+// }
 
 
 export const getCurrentUser = async () => {

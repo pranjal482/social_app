@@ -6,8 +6,8 @@ import { Link, router } from 'expo-router';
 
 import { images } from '../../constants';
 import FormField from '@/components/FormField';
-import CustomButton from '@/components/CustomButton';
-import { signIn } from '@/lib/appwrite';
+import CustomButton from '../../components/CustomButton';
+import { signIn } from '../../lib/appwrite';
 
 const SignIn = () => {
 

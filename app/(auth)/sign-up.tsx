@@ -5,9 +5,9 @@ import tw from 'twrnc';
 import { Link, router } from 'expo-router';
 
 import { images } from '../../constants';
-import FormField from '@/components/FormField';
-import CustomButton from '@/components/CustomButton';
-import { createUser } from '@/lib/appwrite';
+import FormField from '../../components/FormField';
+import CustomButton from '../../components/CustomButton';
+import { createUser } from '../../lib/appwrite';
 
 const SignUp = () => {
 
@@ -19,24 +19,25 @@ const SignUp = () => {
 
  const [isSubmitting, setIsSubmitting] = useState(false);
 
- const submit = async() => {
-   if(!form.username || !form.email || !form.password){
-    Alert.alert('Error','Please fill in all fields.')
-   }
+ const submit = async () => {
+    if (!form.username || !form.email || !form.password) {
+        return Alert.alert('Error', 'Please fill in all fields.');
+    }
 
-   setIsSubmitting(true);
+    setIsSubmitting(true);
 
-   try {
-    const result = await createUser(form.username,form.email, form.password);
+    try {
+        const result = await createUser(form.username, form.email, form.password);
+        console.log('Sign-up successful:', result);
 
-    // set it to global state ....
-    router.replace('/home')
-   } catch (error) {
-    Alert.alert('Error', error.message)
-   } finally {
-    setIsSubmitting(false)
-   }
- }
+        router.replace('/home');
+    } catch (error) {
+        Alert.alert('Error', error.message);
+    } finally {
+        setIsSubmitting(false);
+    }
+};
+
 
   return (
     <SafeAreaView style={tw`bg-[#161622] h-full`}>

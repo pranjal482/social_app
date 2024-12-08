@@ -4,7 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import tw from 'twrnc';
 
 import {images} from '../constants';
-import CustomButton from "@/components/CustomButton";
+import CustomButton from "../components/CustomButton";
 
 export default function Index() {
   return (
